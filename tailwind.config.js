@@ -1,0 +1,17 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [ "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}", ],
+  plugins: [ require('@tailwindcss/forms') ],
+
+  theme: {
+    extend: {
+      backgroundImage: {
+        'calendar-icon': "url('/calendar.svg')",
+      }
+    },
+  },
+  variants: {
+    extend: {},
+  },
+};
