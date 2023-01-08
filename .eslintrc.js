@@ -4,28 +4,14 @@ module.exports = {
     'xo',
     'xo-typescript',
     'xo-react',
-    'plugin:react/jsx-runtime',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
-    'plugin:jsx-a11y/recommended',
     'plugin:unicorn/recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:jsx-a11y/recommended',
     'plugin:@next/next/recommended',
     'plugin:playwright/playwright-test',
     'plugin:prettier/recommended',
   ],
-  settings: {
-    'import/parsers': {
-      '@typescript-eslint/parser': [ '.ts', '.tsx' ],
-    },
-    'import/resolver': {
-      typescript: true,
-      node: true,
-    },
-  },
-  parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: [ './tsconfig.json' ],
-  },
   ignorePatterns: [
     'node_modules',
     '*.config.js',
@@ -33,9 +19,9 @@ module.exports = {
     'dist',
     'next-env.d.ts',
     '.next',
+    '.contentlayer',
   ],
   rules: {
-    'prefer-arrow-callback': 'error',
     'unicorn/prevent-abbreviations': [
       'error',
       {
@@ -49,10 +35,10 @@ module.exports = {
     ],
   },
   overrides: [
-    // For React
+    // For App dir
     {
       files: [ '**/*.tsx' ],
-      excludedFiles: [ '**/pages/**/*.tsx', '**/pages/**/*.ts' ],
+      excludedFiles: [ '**/app/**/*.tsx' ],
       rules: {
         'unicorn/filename-case': [
           'error',
@@ -61,5 +47,6 @@ module.exports = {
           },
         ],
       },
-    }, ]
+    },
+  ],
 };

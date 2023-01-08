@@ -1,5 +1,5 @@
-import { type NextRequest } from 'next/server';
 import { Hono } from 'hono';
+import { type NextRequest } from 'next/server';
 
 const app = new Hono();
 

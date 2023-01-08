@@ -1,36 +1,68 @@
-export type ApiResponse = {
-  ticker: string;
-  description: string;
-  geography: string;
-  frequency: string;
-  dataset: string;
-  units: any;
-  additional_metadata: AdditionalMetadata;
-  data: Data;
-};
+// <reference types="react" />
 
-export type ChartData = {
-  values: number[];
-  dates: string[];
-};
+// Block external access to auxiliary types
 
-export type ChartProperties = {
-  dates: string[];
-  values: number[];
-  label: string;
-  title: string;
-  scale?: number;
-};
+type Merge<T, U> = Omit<T, keyof U> & U;
 
-type AdditionalMetadata = {
-  '1:area_code': string;
-  '3:item_code': string;
-  '1220:base_code': string;
-  'GEO:None': string;
-};
+type PropertiesWithAs<P, T extends React.ElementType> = P & { as?: T };
 
-type Data = {
-  values: number[];
-  dates: string[];
-  status: string[];
-};
+export type PolymorphicPropertiesWithoutReference<
+  P,
+  T extends React.ElementType,
+> = Merge<
+  T extends keyof JSX.IntrinsicElements
+    ? React.PropsWithoutRef<JSX.IntrinsicElements[T]>
+    : React.ComponentPropsWithoutRef<T>,
+  PropertiesWithAs<P, T>
+>;
+
+export type PolymorphicPropertiesWithReference<
+  P,
+  T extends React.ElementType,
+> = Merge<
+  T extends keyof JSX.IntrinsicElements
+    ? React.PropsWithRef<JSX.IntrinsicElements[T]>
+    : React.ComponentPropsWithRef<T>,
+  PropertiesWithAs<P, T>
+>;
+
+// TODO:
+// - PolymorphicFunctionComponent
+// - PolymorphicVoidFunctionComponent (requires @types/react >=16.9.48)
+
+type PolymorphicExoticComponent<
+  P = Record<string, unknown>,
+  T extends React.ElementType = React.ElementType,
+> = Merge<
+  React.ExoticComponent<P & Record<string, unknown>>,
+  /**
+   * **NOTE**: Exotic components are not callable.
+   */
+  <InstanceT extends React.ElementType = T>(
+    props: PolymorphicPropertiesWithReference<P, InstanceT>,
+  ) => React.ReactElement | undefined
+>;
+
+export type PolymorphicForwardReferenceExoticComponent<
+  P,
+  T extends React.ElementType,
+> = Merge<
+  React.ForwardRefExoticComponent<P & Record<string, unknown>>,
+  PolymorphicExoticComponent<P, T>
+>;
+
+export type PolymorphicMemoExoticComponent<
+  P,
+  T extends React.ElementType,
+> = Merge<
+  React.MemoExoticComponent<React.ComponentType<any>>,
+  PolymorphicExoticComponent<P, T>
+>;
+
+export type PolymorphicLazyExoticComponent<
+  P,
+  T extends React.ElementType,
+> = Merge<
+  React.LazyExoticComponent<React.ComponentType<any>>,
+  PolymorphicExoticComponent<P, T>
+>;
